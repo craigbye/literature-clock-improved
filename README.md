@@ -2,7 +2,7 @@
 
 A clock for book lovers that tells the time using quotes from literature. Support for multiple languages, themes, and more!
 
-Based on the work of [Carlos Bonadeo](https://github.com/cdmoro), [Johannes Enevoldsen](https://twitter.com/JohsEnevoldsen) ([literature-clock](https://github.com/JohannesNE/literature-clock)), and [Jaap Meijers](http://www.eerlijkemedia.nl/) ([e-reader clock](https://www.instructables.com/id/Literary-Clock-Made-From-E-reader/)).
+Based on the work of [Carlos Bonadeo](https://github.com/cdmoro) ([literature-clock](https://literatureclock.netlify.app/)), [Johannes Enevoldsen](https://twitter.com/JohsEnevoldsen) ([literature-clock](https://github.com/JohannesNE/literature-clock)), and [Jaap Meijers](http://www.eerlijkemedia.nl/) ([e-reader clock](https://www.instructables.com/id/Literary-Clock-Made-From-E-reader/)).
 
 
 
