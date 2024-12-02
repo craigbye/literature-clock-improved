@@ -3,7 +3,7 @@ import { Locale, Quote } from '../types';
 import { CITE_FACTOR, INITIAL_THEME_FONT_SIZE } from '../modules/font';
 import { store } from '../store';
 
-const GITHUB_NEW_ISSUE_URL = 'https://github.com/cdmoro/literature-clock/issues/new';
+const GITHUB_NEW_ISSUE_URL = 'https://github.com/craigbye/literature-clock-improved/issues/new';
 
 export function getTime() {
   const testTime = store.get('time');
@@ -19,7 +19,7 @@ export function updateGHLinks(time: string, quote: Quote, locale: Locale) {
 
   const addQuoteUrl = new URL(GITHUB_NEW_ISSUE_URL);
   addQuoteUrl.searchParams.set('template', 'add-quote.yml');
-  addQuoteUrl.searchParams.set('assignees', 'cdmoro');
+  addQuoteUrl.searchParams.set('assignees', 'craigbye');
   addQuoteUrl.searchParams.set('title', `[${time}][${locale}] Add quote`);
   addQuoteUrl.searchParams.set('labels', `add-quote,${locale}`);
   addQuoteUrl.searchParams.set('locale', locale);
@@ -31,7 +31,7 @@ export function updateGHLinks(time: string, quote: Quote, locale: Locale) {
 
   const reportErrorUrl = new URL(GITHUB_NEW_ISSUE_URL);
   reportErrorUrl.searchParams.set('template', 'quote-error.yml');
-  reportErrorUrl.searchParams.set('assignees', 'cdmoro');
+  reportErrorUrl.searchParams.set('assignees', 'craigbye');
   reportErrorUrl.searchParams.set('title', `[${time}][${locale}]${quote.id ? `[${quote.id}]` : ''} Report error`);
   reportErrorUrl.searchParams.set('labels', `bug,${locale}`);
   reportErrorUrl.searchParams.set('locale', locale);

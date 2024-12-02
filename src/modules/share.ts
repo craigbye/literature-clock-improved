@@ -56,7 +56,7 @@ async function shareQuote() {
         }),
       ];
 
-      const url = new URL('https://literatureclock.netlify.app/');
+      const url = new URL('https://transcendent-litclock.netlify.app/');
       const theme = store.get('theme');
 
       if (locale) {
