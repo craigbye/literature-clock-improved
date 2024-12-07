@@ -50,6 +50,6 @@ discrepancy_df = discrepancy_df.fillna(0)
 
 # Save the discrepancies to a new CSV file
 output_file = os.path.join('scripts/author_discrepancies.csv')
-discrepancy_df.to_csv(output_file, delimiter='|')
+discrepancy_df.to_csv(output_file, sep='|')
 
 print("CSV file 'author_discrepancies.csv' has been created successfully.")

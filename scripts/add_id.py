@@ -42,6 +42,6 @@ for file_name in os.listdir(folder_path):
         df_with_id = generate_id(df)
         
         # Save the CSV with the new column
-        df_with_id.to_csv(file_path, index=False, delimeter='|')
+        df_with_id.to_csv(file_path, index=False, sep='|')
 
 print("Column 'Id' added successfully.")
