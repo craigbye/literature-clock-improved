@@ -12,25 +12,21 @@ def check_csv_files(directory):
             errors = 0
 
             with open(filepath, 'r', newline='', encoding="cp437") as csvfile:
-                reader = csv.DictReader(csvfile)
+                reader = csv.DictReader(csvfile, delimiter='|')
                 rows = list(reader)
+                linenum = 2 #ignore header row
 
                 print(f"Processing {file_name}...")
 
-                # Loop through the rows and update the 'Quote time' if needed
+                # Loop through the rows and find missing quote times
                 for row in rows:
                     if 'Quote time' in row and 'Quote' in row:
                         if row['Quote time'] not in row['Quote']:
+                            print("Line " + str(linenum) + ": " + row['Quote time'] + " " + row['Quote'])
                             errors += 1
                             if not row['Quote time'].startswith('*'):
                                 row['Quote time'] = "* " + row['Quote time']
-
-                # Write the updated rows back to the file
-                fieldnames = reader.fieldnames  # Preserve the original column names
-                with open(filepath, 'w', newline='', encoding="cp437") as csvfile:
-                    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-                    writer.writeheader()
-                    writer.writerows(rows)
+                    linenum += 1
 
             total_errors += errors
 
@@ -38,6 +34,7 @@ def check_csv_files(directory):
             print(f"- Errors found: {errors}\n")
     return total_errors
 
+# check all CSV files in quotes directory
 quotes_path = 'quotes/'
 result = check_csv_files(quotes_path)
 

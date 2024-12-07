@@ -15,7 +15,7 @@ for file in csv_files:
     file_path = os.path.join(folder_path, file)
     
     # Read the CSV file
-    df = pd.read_csv(file_path)
+    df = pd.read_csv(file_path, delimiter='|')
     
     # Group by 'Author' and count the number of unique 'Title' for each author
     author_counts = df.groupby('Author')['Title'].nunique()
@@ -50,6 +50,6 @@ discrepancy_df = discrepancy_df.fillna(0)
 
 # Save the discrepancies to a new CSV file
 output_file = os.path.join('scripts/author_discrepancies.csv')
-discrepancy_df.to_csv(output_file)
+discrepancy_df.to_csv(output_file, sep='|')
 
 print("CSV file 'author_discrepancies.csv' has been created successfully.")

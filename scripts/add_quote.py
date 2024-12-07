@@ -23,7 +23,7 @@ def generate_id(time, lang_code):
     # Check how many entries exist with the same time
     if os.path.exists(file_path):
         with open(file_path, mode='r', newline='', encoding='utf-8') as file:
-            reader = csv.reader(file)
+            reader = csv.reader(file, delimiter='|')
             for row in reader:
                 if row[0] == time:  # Assuming the time is in the first column
                     count += 1
@@ -51,7 +51,7 @@ def add_quote_to_csv(time, quote, title, author, language_code, sfw):
         
         # Write to the CSV (ID, time, *, translated quote, author, translated title, sfw_status)
         with open(file_path, mode='a', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
+            writer = csv.writer(file, delimiter='|')
             writer.writerow([time, quote_id, '*', translated_quote, translated_title, author, sfw])
 
 # Function to ask the user for quote details

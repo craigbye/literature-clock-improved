@@ -129,7 +129,7 @@ def resort_csv():
         sorted_df = df.sort_values(by=['Time','Id'])
 
         # Write the sorted DataFrame back to a new CSV file
-        sorted_df.to_csv(file_path, index=False)
+        sorted_df.to_csv(file_path, index=False, sep='|')
 
 
 
