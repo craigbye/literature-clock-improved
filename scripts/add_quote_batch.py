@@ -4,6 +4,8 @@ import time
 from googletrans import Translator
 import httpcore
 import pandas as pd
+import argparse
+from fuzzywuzzy import fuzz
 
 # Initialize the translator
 translator = Translator()
@@ -17,6 +19,9 @@ folder_path = 'quotes'
 # Translate timeout (in seconds)
 trans_timeout = 5
 
+# Fuzzy quote match threshold
+quote_match_threshold = 80
+
 # Function to generate the ID based on the time and existing entries
 def generate_id(time, lang_code):
     file_name = f'quotes.{lang_code}.csv'
@@ -29,14 +34,20 @@ def generate_id(time, lang_code):
     # Check how many entries exist with the same time
     if os.path.exists(file_path):
         with open(file_path, mode='r', newline='', encoding='utf-8') as file:
-            reader = csv.reader(file)
+            reader = csv.reader(file, delimiter='|')
             for row in reader:
                 if row[0] == time:  # Assuming the time is in the first column
                     count += 1
     
     # Create the ID in the format HHMM-XXX
-    print(f"{time_without_colon}-{count:03}")
+    print(f"Creating quote ID: {time_without_colon}-{count:03}")
     return f"{time_without_colon}-{count:03}"
+
+# Function to append to CSV without affecting quotation marks
+def append_csv_without_changing_quotes(file_path, data, delimiter='|'):
+    with open(file_path, mode='a', newline='', encoding='utf-8') as csvfile:
+            line = delimiter.join(data)
+            csvfile.write(line + '\n')
 
 # Function to add the translated quote, title, and quote time to the CSV files
 def add_quote_to_csv(time_val, quote_time, quote, author, title, language_code, sfw_status):
@@ -78,22 +89,35 @@ def add_quote_to_csv(time_val, quote_time, quote, author, title, language_code, 
         file_path = os.path.join(folder_path, file_name)
         
         # Write to the CSV (ID, time, translated quote time, translated quote, translated title, author, sfw_status)
-        with open(file_path, mode='a', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            writer.writerow([time_val, quote_id, translated_quote_time, translated_quote, translated_title, author, sfw_status])
-            file.flush()
+        append_csv_without_changing_quotes(file_path,[time_val, quote_id, translated_quote_time, translated_quote, translated_title, author, sfw_status])
+
+# Function to check if the quote already exists for the specified time and language
+def check_if_quote_exists(time_val, quote_str, lang_code):
+    file_name = f'quotes.{lang_code}.csv'
+    file_path = os.path.join(folder_path, file_name)
+    
+    with open(file_path, mode='r', newline='', encoding='utf-8') as file:
+        reader = csv.DictReader(file, delimiter='|', quoting=csv.QUOTE_NONE)
+        for row in reader:
+            if row['Time'] == time_val and fuzz.partial_ratio(row['Quote'], quote_str) >= quote_match_threshold:
+                print("Potential duplicate quote: " + time_val + " - " + quote_str )
+                print("skipping...")
+                return True
+            
+    return False
+
 
 # Function to process quotes in batch from a CSV file (reading by column names)
 def process_batch_csv(file_path, language_code):
     with open(file_path, mode='r', newline='', encoding='utf-8') as file:
-        reader = csv.DictReader(file)  # Use DictReader to read by column name
+        reader = csv.DictReader(file, delimiter='|', quoting=csv.QUOTE_NONE)  # Use DictReader to read by column name
         
         # First, count the total number of quotes
         total_quotes = sum(1 for _ in reader)
         
         # Reset the reader to start reading from the beginning again
         file.seek(0)
-        reader = csv.DictReader(file)
+        reader = csv.DictReader(file, delimiter='|', quoting=csv.QUOTE_NONE)
 
         # Initialize a counter
         quote_counter = 1
@@ -109,7 +133,10 @@ def process_batch_csv(file_path, language_code):
             title = row['Title']
             sfw_status = row['SFW']  # Match the CSV column name exactly
 
-            add_quote_to_csv(time_val, quote_time, quote, author, title, language_code, sfw_status)
+            # check if quote already exists
+            if not check_if_quote_exists(time_val, quote, language_code):
+                # add quote to quotes csv
+                add_quote_to_csv(time_val, quote_time, quote, author, title, language_code, sfw_status)
 
             # Increment the counter
             quote_counter += 1
@@ -123,19 +150,28 @@ def resort_csv():
         file_path = os.path.join(folder_path, file_name)
 
         # Read the CSV file into a DataFrame
-        df = pd.read_csv(file_path)
+        df = pd.read_csv(file_path, delimiter='|', quoting=csv.QUOTE_NONE)
 
         # Sort the DataFrame by ColumnA, ColumnB, and ColumnC
         sorted_df = df.sort_values(by=['Time','Id'])
 
         # Write the sorted DataFrame back to a new CSV file
-        sorted_df.to_csv(file_path, index=False, sep='|')
+        sorted_df.to_csv(file_path, index=False, sep='|', quoting=csv.QUOTE_NONE)
 
 
 
-# Example of running the batch processor
-batch_file = 'pratchett.csv'
-language_code = 'en-US'  # Assuming your batch is in English
+if __name__ == "__main__":
+    # Create the parser
+    parser = argparse.ArgumentParser(description="Add a batch of quotes.")
 
-process_batch_csv(batch_file, language_code)
-resort_csv()
+    # Add the arguments
+    parser.add_argument('--file', type=str, required=True, help='Batch file to import')
+    parser.add_argument('--language', type=str, default='en-US', help='Language of quotes to import')
+
+    # Parse the arguments
+    args = parser.parse_args()
+
+    process_batch_csv(args.file, args.language)
+    resort_csv()
+
+
