@@ -12,20 +12,34 @@ def check_csv_files(directory):
             errors = 0
 
             with open(filepath, 'r', newline='', encoding="cp437") as csvfile:
-                reader = csv.DictReader(csvfile, delimiter='|')
+                reader = csv.DictReader(csvfile, delimiter='|', quoting=csv.QUOTE_NONE)
                 rows = list(reader)
                 linenum = 2 #ignore header row
 
                 print(f"Processing {file_name}...")
 
-                # Loop through the rows and find missing quote times
+                # Loop through the rows and find missing quote times, and correct number of columns
                 for row in rows:
+                    # check for correct number of columns
+                    if len(row) != 7:
+                        print("Incorrect column count line " + str(linenum) + ": " + row['Quote'])
+                        errors += 1
+
+                    
+                    # check if quote time is present in quote itself
                     if 'Quote time' in row and 'Quote' in row:
                         if row['Quote time'] not in row['Quote']:
-                            print("Line " + str(linenum) + ": " + row['Quote time'] + " " + row['Quote'])
+                            print("Missing quote time line " + str(linenum) + ": " + row['Quote time'] + " " + row['Quote'])
                             errors += 1
                             if not row['Quote time'].startswith('*'):
                                 row['Quote time'] = "* " + row['Quote time']
+
+                    # check if matching number of quotation marks
+                    if row['Quote'].count('"') % 2 != 0:
+                        print("Unbalanced quotation marks line " + str(linenum) + ": " + row['Quote'])
+                        errors += 1
+
+
                     linenum += 1
 
             total_errors += errors
