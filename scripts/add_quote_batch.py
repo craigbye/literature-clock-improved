@@ -133,6 +133,16 @@ def process_batch_csv(file_path, language_code):
             title = row['Title']
             sfw_status = row['SFW']  # Match the CSV column name exactly
 
+            #check if any fields are empty
+            if (not time_val or 
+                not quote_time or
+                not quote or
+                not author or
+                not title or
+                not sfw_status):
+                print("Quote contains an empty value:" + quote + "...skipping.")
+                continue
+
             # check if quote already exists
             if not check_if_quote_exists(time_val, quote, language_code):
                 # add quote to quotes csv

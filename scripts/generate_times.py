@@ -57,6 +57,7 @@ for file_name in file_list:
 
                 if len(quote_parts) == 1:
                     errors += 1
+                    print(row['Quote'])
                     quote_parts.append('');
 
                 quote_first = quote_parts[0]
