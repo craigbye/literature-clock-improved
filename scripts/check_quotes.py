@@ -39,6 +39,15 @@ def check_csv_files(directory):
                         print("Unbalanced quotation marks line " + str(linenum) + ": " + row['Quote'])
                         errors += 1
 
+                    #check if any fields are empty
+                    if (not row['Time'] or 
+                        not row['Quote time'] or
+                        not row['Quote'] or
+                        not row['Author'] or
+                        not row['Title'] or
+                        not row['SFW']):
+                        print("Empty field line " + str(linenum) + ": " + row['Quote'])
+                        errors += 1
 
                     linenum += 1
 
