@@ -1,5 +1,5 @@
 {
-  "name": "literature-clock",
+  "name": "literature-clock-improved",
   "version": "1.0.0",
   "description": "A clock that tells the time using quotes from literature. Support for multiple languages, themes, and more!",
   "type": "module",
@@ -22,15 +22,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cdmoro/literature-clock.git"
+    "url": "git+https://github.com/craigbye/literature-clock-improved.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/cdmoro/literature-clock/issues"
+    "url": "https://github.com/craigbye/literature-clock-improved/issues"
   },
-  "homepage": "https://github.com/cdmoro/literature-clock#readme",
+  "homepage": "https://github.com/craigbye/literature-clock-improved#readme",
   "devDependencies": {
     "@eslint/js": "^9.13.0",
     "eslint": "^9.13.0",
@@ -42,7 +42,7 @@
     "prettier": "3.3.3",
     "typescript": "^5.4.5",
     "typescript-eslint": "^8.11.0",
-    "vite": "^5.2.11",
+    "vite": "^5.4.11",
     "vitest": "^1.6.0"
   },
   "dependencies": {
