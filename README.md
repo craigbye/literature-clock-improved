@@ -63,8 +63,6 @@ Translations
 
 All translations were made from the original CSV English file, sometimes the translations are not accurate (I used Google Translate, yes, I know), but it's fine, this is something that can be fixed easily, just one quote at a time. :) So far, these are the times that don't have quotes:
 
-- 06:07
-- 06:18
 - 08:21
 - 10:28
 - 11:46
@@ -81,7 +79,7 @@ If you want to help you can:
 
 ## Screensaver
 
-If you want to use this clock as a screensaver there are several ways to address this, although, it depends on the OS. I'm currently using the Mac OS solution and it worked like a charm. You can find more information here:
+If you want to use this clock as a screensaver there are several ways to address this, although, it depends on the OS. You can find more information here:
 
 - Mac OS: Mac OS X Screen Saver powered by a Web View (https://github.com/liquidx/webviewscreensaver)
 - Windows: Set Webpage as Screensaver in Windows 10 (https://www.youtube.com/watch?v=UovZwUlwwEs)
@@ -118,5 +116,5 @@ This project is possible thanks to the following projects:
 - [html2canvas-pro](https://yorickshan.github.io/html2canvas-pro/)
 - [lunarphase-js](https://github.com/jasonsturges/lunarphase-js)
 - [Picsum](https://picsum.photos/)
-
+- [Carlos Bonadeo](https://github.com/cdmoro)
 
